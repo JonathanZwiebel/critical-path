@@ -1,9 +1,11 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
+// TODO: Make mutable
+// TODO: Allow for more than just end-to-start relationships
 /**
- * This class models a single dependency-based task with a constant completion time
+ * This class models a single dependency-based task with a constant completion time and can communicate
+ * with past or future tasks to carry out a Forward and Backward pass.
  */
 public class Task {
     // TODO: Rename future
@@ -14,6 +16,12 @@ public class Task {
     public float float_time;
     private boolean forward_passed_, backward_passed_;
 
+    /**
+     * Sole constructor to construct the task
+     * @param time time to complete this task
+     * @param dependencies tasks needed before this task
+     * @param future tasks that the completion of this task allows to start
+     */
     public Task(float time, ArrayList dependencies, ArrayList future) {
         assert time >= 0;
         forward_passed_ = false;
@@ -25,13 +33,20 @@ public class Task {
         future_end_map_ = new HashMap<>();
     }
 
+    /**
+     * To be called be a task A preceding this task when A has found it's early end time on the forward pass
+     * Notifier will add to the dependencies hash map the notification task and its early end time
+     * @param notifier preceding task
+     * @param early_start early end time of preceding task
+     */
     public void forward_notify(Task notifier, float early_start) {
         assert early_start >= 0;
+        assert dependencies.contains(notifier);
         assert !forward_passed_ && !backward_passed_;
         dependencies_start_map_.put(notifier, early_start);
     }
 
-    public void forward_pass() {
+    private void forward_pass() {
         assert !forward_passed_ && !backward_passed_;
         // TODO: Assert that the Tasks completely match, not just the size
         assert dependencies_start_map_.size() == dependencies.size();
@@ -45,13 +60,20 @@ public class Task {
         }
     }
 
+    /**
+     * To be called be a task B to which this task is a precedent when B has found it's late start time on the
+     * backward pass. Notifier will add to the future hash map the notification task and its late start time
+     * @param notifier future task
+     * @param late_end late start time of preceding task
+     */
     public void backward_notify(Task notifier, float late_end) {
         assert forward_passed_ && !backward_passed_;
+        assert future.contains(notifier);
         assert late_end >= 0;
         future_end_map_.put(notifier, late_end);
     }
 
-    public void backward_pass() {
+    private void backward_pass() {
         assert forward_passed_ && !backward_passed_;
         assert future_end_map_.size() == future.size();
         backward_passed_ = true;

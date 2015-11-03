@@ -16,12 +16,13 @@ public class Task {
 
     public Task(float time, ArrayList dependencies, ArrayList future) {
         assert time >= 0;
-
         forward_passed_ = false;
         backward_passed_ = false;
         this.dependencies = dependencies;
         this.future = future;
         this.time = time;
+        dependencies_start_map_ = new HashMap<>();
+        future_end_map_ = new HashMap<>();
     }
 
     public void forward_notify(Task notifier, float early_start) {
@@ -57,7 +58,9 @@ public class Task {
         late_end = (float) future_end_map_.values().toArray()[0];
         assert late_end >= 0;
         late_start = late_end - time;
+        float_time = late_start - early_start;
         assert late_start >= 0;
+        assert float_time >= 0;
         for(Task t : dependencies) {
             t.backward_notify(this, late_start);
         }

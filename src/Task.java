@@ -16,6 +16,7 @@ public class Task {
     public float float_time;
     private boolean forward_passed_, backward_passed_;
 
+    // TODO: Ensure that there are no collisions between dependencies and future
     /**
      * Sole constructor to construct the task
      * @param time time to complete this task
@@ -44,15 +45,22 @@ public class Task {
         assert dependencies.contains(notifier);
         assert !forward_passed_ && !backward_passed_;
         dependencies_start_map_.put(notifier, early_start);
+        if(dependencies_start_map_.size() == dependencies.size()) {
+            forward_pass();
+        }
     }
 
+    /**
+     * Carries out the forward pass from this node. Asserts that all of the dependencies have been covered in the pass
+     * Sets early start to the maximum value in the dependency start map. Sets early end to early start + time.
+     */
     private void forward_pass() {
         assert !forward_passed_ && !backward_passed_;
         // TODO: Assert that the Tasks completely match, not just the size
         assert dependencies_start_map_.size() == dependencies.size();
         forward_passed_ = true;
         // TODO: Ensure that this is the edge value
-        early_start = (float) dependencies_start_map_.values().toArray()[0];
+        early_start = (float) dependencies_start_map_.values().toArray()[dependencies_start_map_.values().toArray().length - 1];
         assert early_start >= 0;
         early_end = early_start + time;
         for(Task t : future) {
@@ -71,12 +79,22 @@ public class Task {
         assert future.contains(notifier);
         assert late_end >= 0;
         future_end_map_.put(notifier, late_end);
+        if(future_end_map_.size() == future.size()) {
+            backward_pass();
+        }
     }
 
+    /**
+     * Carries out the backward pass from this node. Asserts that all of the future tasks have been covered in the pass
+     * Sets late end to the maximum value in the dependency start map. Sets early end to early start + time.
+     * Sets the float time to late start - early start
+     */
     private void backward_pass() {
         assert forward_passed_ && !backward_passed_;
+        // TODO: Assert that the Tasks completely match, not just the size
         assert future_end_map_.size() == future.size();
         backward_passed_ = true;
+        // TODO: Ensure that this is the edge value
         late_end = (float) future_end_map_.values().toArray()[0];
         assert late_end >= 0;
         late_start = late_end - time;

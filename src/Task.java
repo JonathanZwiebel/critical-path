@@ -17,6 +17,8 @@ public class Task {
     private boolean forward_passed_, backward_passed_;
 
     // TODO: Ensure that there are no collisions between dependencies and future
+    // TODO: Construct and pass by name
+    // TODO: Allow for dependency assignment after construction
     /**
      * Sole constructor to construct the task
      * @param time time to complete this task
@@ -104,5 +106,23 @@ public class Task {
         for(Task t : dependencies) {
             t.backward_notify(this, late_start);
         }
+    }
+
+    /**
+     * Prints out all of the computed time values
+     * @return All of computed time values
+     */
+    public String toString() {
+        String ret = "";
+        ret += "Time: " + time;
+        if(forward_passed_) {
+            ret += "\nEarly Start: " + early_start + " Late Start: " + late_start;
+            if(backward_passed_) {
+                ret += "\nEarly End: " + early_start + " Late End: " + late_start;
+                ret += "\nFloat: " + float_time;
+            }
+        }
+        ret += "\n";
+        return ret;
     }
 }

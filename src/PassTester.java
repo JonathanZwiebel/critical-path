@@ -5,10 +5,10 @@ import java.util.ArrayList;
  */
 public class PassTester {
     public static void main(String[] args) {
-        Task a = new Task(5, null, null);
+        Task a = new Task("a", 5, null, null);
         ArrayList<Task> list_a = new ArrayList();
         list_a.add(a);
-        Task b = new Task(3, list_a, null);
+        Task b = new Task("b", 3, list_a, null);
         // TODO: Tasks can not actually be constructed now in a dependency tree, fix this
     }
 }

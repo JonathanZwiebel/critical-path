@@ -121,12 +121,47 @@ public class Task {
     }
 
     /**
+     * Starts the forward pass of the entire TaskMap
+     * To only be called on the single head element
+     */
+    public void forwardPassStart() {
+        assert dependencies.size() == 0;
+        assert !forward_passed_ && !backward_passed_;
+        forward_passed_ = true;
+        early_start = 0;
+        early_end = time;
+        for(Task t : future) {
+            t.forwardNotify(this, early_end);
+        }
+    }
+
+    /**
+     * Starts the backward pass of the entire TaskMap
+     * To only be called on the single tail element
+     * @param project_time the optimal project completion time
+     */
+    public void backwardPassStart(float project_time) {
+        assert future_end_map_.size() == 0;
+        assert forward_passed_ && !backward_passed_;
+        assert project_time > 0;
+        backward_passed_ = true;
+        late_end = project_time;
+        late_start = late_end - time;
+        float_time = late_start - early_start;
+        assert float_time == 0;
+        assert late_start >= 0;
+        for(Task t : dependencies) {
+            t.backwardNotify(this, late_start);
+        }
+    }
+
+    /**
      * Prints out all of the computed time values
      * @return All of computed time values
      */
     public String toString() {
         String ret = "";
-        ret += "Time: " + time;
+        ret += "Name: " + name + " | Time: " + time;
         if(forward_passed_) {
             ret += "\nEarly Start: " + early_start + " Late Start: " + late_start;
             if(backward_passed_) {

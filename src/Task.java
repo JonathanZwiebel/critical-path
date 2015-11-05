@@ -163,9 +163,9 @@ public class Task {
         String ret = "";
         ret += "Name: " + name + " | Time: " + time;
         if(forward_passed_) {
-            ret += "\nEarly Start: " + early_start + " Late Start: " + late_start;
+            ret += "\nEarly Start: " + early_start + " Early End: " + early_end;
             if(backward_passed_) {
-                ret += "\nEarly End: " + early_start + " Late End: " + late_start;
+                ret += "\nLate Start: " + late_start + " Late End: " + late_end;
                 ret += "\nFloat: " + float_time;
             }
         }

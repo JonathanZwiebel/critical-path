@@ -19,6 +19,7 @@ public class TaskMap {
     boolean linked_;
 
     public TaskMap() {
+        mapping =  new HashMap();
         linked_ = false;
     }
 

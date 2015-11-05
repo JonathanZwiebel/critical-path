@@ -12,6 +12,7 @@ public class Task {
     // TODO: Probably don't use HashMap and ArrayLists together
     private HashMap<Task, Float> dependencies_start_map_, future_end_map_;
     public ArrayList<Task> dependencies, future;
+    public String name;
     public float early_start, late_start, early_end, late_end, time;
     public float float_time;
     private boolean forward_passed_, backward_passed_;
@@ -21,14 +22,17 @@ public class Task {
     // TODO: Allow for dependency assignment after construction
     /**
      * Sole constructor to construct the task
+     * @param name unique task identifier
      * @param time time to complete this task
      * @param dependencies tasks needed before this task
      * @param future tasks that the completion of this task allows to start
      */
-    public Task(float time, ArrayList dependencies, ArrayList future) {
+    public Task(String name, float time, ArrayList dependencies, ArrayList future) {
         assert time >= 0;
+        assert !name.isEmpty();
         forward_passed_ = false;
         backward_passed_ = false;
+        this.name = name;
         this.dependencies = dependencies;
         this.future = future;
         this.time = time;

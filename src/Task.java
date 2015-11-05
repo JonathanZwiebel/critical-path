@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 // TODO: Make mutable
@@ -74,7 +75,12 @@ public class Task {
         assert dependencies_start_map_.size() == dependencies.size();
         forward_passed_ = true;
         // TODO: Ensure that this is the edge value
-        early_start = (float) dependencies_start_map_.values().toArray()[dependencies_start_map_.values().toArray().length - 1];
+        ArrayList<Float> dependencies_list = new ArrayList();
+        for(Object o : dependencies_start_map_.values().toArray()) {
+            dependencies_list.add((float) o);
+        }
+        Collections.sort(dependencies_list);
+        early_start = dependencies_list.get(dependencies_list.size() -  1);
         assert early_start >= 0;
         early_end = early_start + time;
         for(Task t : future) {
@@ -109,7 +115,12 @@ public class Task {
         assert future_end_map_.size() == future.size();
         backward_passed_ = true;
         // TODO: Ensure that this is the edge value
-        late_end = (float) future_end_map_.values().toArray()[0];
+        ArrayList<Float> future_list = new ArrayList();
+        for(Object o : future_end_map_.values().toArray()) {
+            future_list.add((float) o);
+        }
+        Collections.sort(future_list);
+        early_start = future_list.get(0);
         assert late_end >= 0;
         late_start = late_end - time;
         float_time = late_start - early_start;

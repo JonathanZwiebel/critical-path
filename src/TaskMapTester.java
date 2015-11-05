@@ -12,6 +12,7 @@ public class TaskMapTester {
 
         project.link();
         project.forwardPass();
+        project.backwarPass();
 
         for(TaskLinker linker : project.mapping.values()) {
             System.out.print(linker.task);

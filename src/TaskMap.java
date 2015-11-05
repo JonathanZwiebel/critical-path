@@ -17,10 +17,12 @@ public class TaskMap {
     HashMap<String, TaskLinker> mapping;
     Task head_ = null, tail_ = null;
     boolean linked_;
+    float project_time_;
 
     public TaskMap() {
         mapping =  new HashMap();
         linked_ = false;
+        project_time_  = -1;
     }
 
     /**
@@ -73,5 +75,12 @@ public class TaskMap {
     public void forwardPass() {
         assert linked_ = true;
         head_.forwardPassStart();
+        project_time_ = tail_.early_end;
+    }
+
+    public void backwarPass() {
+        assert linked_ = true;
+        assert project_time_ >= 0;
+        tail_.backwardPassStart(project_time_);
     }
 }

@@ -3,11 +3,11 @@ import java.util.HashMap;
 
 /**
  * Constructed before the tasks are constructed. Takes in the dependencies and future events by Name. Passes the names
- * to the Task as an ArrayList. Created by the TaskSet. This class is needed because the Tasks cannot be linked to
+ * to the Task as an ArrayList. Created by the TaskMap. This class is needed because the Tasks cannot be linked to
  * future Tasks before those Tasks are created
  */
 public class TaskLinker {
-    public Task task; // Reference to the task is stored in TaskSet
+    public Task task; // Reference to the task is stored in TaskMap
     private ArrayList<String> dependencies_, future_;
 
     /**

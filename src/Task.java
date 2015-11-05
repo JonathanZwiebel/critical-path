@@ -19,7 +19,7 @@ public class Task {
     private boolean forward_passed_, backward_passed_, linked_;
 
     /**
-     * Sole constructor, to be called by TaskSet. Creates an task without the reference ArrayLists.
+     * Sole constructor, to be called by TaskMap. Creates an task without the reference ArrayLists.
      * @param name unique task identifier
      * @param time time to complete this task
      */

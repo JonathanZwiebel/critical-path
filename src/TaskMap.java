@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -6,6 +7,7 @@ import java.util.HashMap;
  *
  * // TODO [MAJOR]: Allow for put, remove and modification after linkage
  * // TODO: Allow for multiple heads and tails by adding ghosts to the end
+ * // TODO: Add backward pass
  * Operations:
  * put - Adds a task to the map - O(1)
  * link - Links all of the tasks together to create a double linked list - O(n^2) // TODO: Fix this
@@ -29,7 +31,7 @@ public class TaskMap {
      * @param future names of the tasks that the completion of this task allows to begin
      * TODO: Only pass past tasks, calculate future tasks. Will ensure that is full overlap.
      */
-    public void put(String name, float time, ArrayList<String> dependencies, ArrayList<String> future)  {
+    public void put(String name, float time, String[] dependencies, String[] future)  {
         assert !linked_;
         assert !mapping.containsKey(name);
         assert !name.isEmpty();
@@ -37,17 +39,17 @@ public class TaskMap {
 
         Task task = new Task(name, time);
 
-        if(dependencies.size() == 0) {
+        if(dependencies.length == 0) {
             assert head_ == null;
             head_ = task;
         }
 
-        if(future.size() == 0) {
+        if(future.length == 0) {
             assert tail_ == null;
             tail_ = task;
         }
 
-        TaskLinker linker = new TaskLinker(task, dependencies, future);
+        TaskLinker linker = new TaskLinker(task, new ArrayList<String>(Arrays.asList(dependencies)), new ArrayList<String>(Arrays.asList(future)));
         mapping.put(name, linker);
     }
 

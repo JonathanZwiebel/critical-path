@@ -120,7 +120,7 @@ public class Task {
             future_list.add((float) o);
         }
         Collections.sort(future_list);
-        early_start = future_list.get(0);
+        late_end = future_list.get(0);
         assert late_end >= 0;
         late_start = late_end - time;
         float_time = late_start - early_start;

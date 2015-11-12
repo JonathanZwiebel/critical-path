@@ -41,7 +41,7 @@ public class Task {
      * @param future tasks that the completion of this task allows to start
      */
     public void linkTask(ArrayList<Task> dependencies, ArrayList<Task> future) {
-        assert linked_ == false : "Duplicate call to linkTask";
+        assert linked_ == false : "In " + name + ": " + "Duplicate call to linkTask";
         this.dependencies = dependencies;
         this.future = future;
         dependencies_start_map_ = new HashMap<>();
@@ -55,9 +55,9 @@ public class Task {
      * @param notifier preceding task
      */
     public void forwardNotify(Task notifier) {
-        assert notifier.early_end >= 0 : "Negative early end time from notifying task " + notifier.name;
-        assert dependencies.contains(notifier);
-        assert !forward_passed_ && !backward_passed_;
+        assert notifier.early_end >= 0 : "In " + name + ": " + "Negative early end time from notifying task " + notifier.name;
+        assert dependencies.contains(notifier) : "In " + name + ": " + "Notifier task not in dependencies: " + notifier.name;
+        assert !forward_passed_ && !backward_passed_ : "In " + name + ": " + "Attempting to forwardNotify after passing " + notifier.name;
         dependencies_start_map_.put(notifier, notifier.early_end);
         if(dependencies_start_map_.size() == dependencies.size()) {
             forwardPass();
@@ -69,9 +69,9 @@ public class Task {
      * Sets early start to the maximum value in the dependency start map. Sets early end to early start + time.
      */
     private void forwardPass() {
-        assert !forward_passed_ && !backward_passed_;
+        assert !forward_passed_ && !backward_passed_ : "In " + name + ": " + "Forward passing after pass already done";
         // TODO: Assert that the Tasks completely match, not just the size
-        assert dependencies_start_map_.size() == dependencies.size();
+        assert dependencies_start_map_.size() == dependencies.size() : "In " + name + ": " + "Dependencies HashMap does not match dependencies list in size: HashMap Size: " + dependencies_start_map_.size() + "List Size: " + dependencies.size();
         forward_passed_ = true;
         // TODO: Ensure that this is the edge value
         ArrayList<Float> dependencies_list = new ArrayList();
@@ -80,7 +80,7 @@ public class Task {
         }
         Collections.sort(dependencies_list);
         early_start = dependencies_list.get(dependencies_list.size() -  1);
-        assert early_start >= 0;
+        assert early_start >= 0 : "In " + name + ": " + "Negative early start of " + early_start;
         early_end = early_start + time;
         for(Task t : future) {
             t.forwardNotify(this);
@@ -93,9 +93,9 @@ public class Task {
      * @param notifier future task
      */
     public void backwardNotify(Task notifier) {
-        assert forward_passed_ && !backward_passed_;
-        assert future.contains(notifier);
-        assert notifier.late_start >= 0;
+        assert forward_passed_ && !backward_passed_ : "In " + name + ": " + "forward_passed_ = " + forward_passed_ + " backward_passed_ = " + backward_passed_ + "when backwardNotify by " + notifier.name;
+        assert future.contains(notifier) : "In " + name + ": " + notifier.name + "not found in future set";
+        assert notifier.late_start >= 0 : "In " + name + ": " + "Negative late start of " + notifier.late_start;
         future_end_map_.put(notifier, notifier.late_start);
         if(future_end_map_.size() == future.size()) {
             backwardPass();
@@ -108,9 +108,9 @@ public class Task {
      * Sets the float time to late start - early start
      */
     private void backwardPass() {
-        assert forward_passed_ && !backward_passed_;
+        assert forward_passed_ && !backward_passed_ : "In " + name + ": " + "forward_passed_ = " + forward_passed_ + " backward_passed_ = " + backward_passed_ + "when attempting backward pass";
         // TODO: Assert that the Tasks completely match, not just the size
-        assert future_end_map_.size() == future.size();
+        assert future_end_map_.size() == future.size()  : "In " + name + ": " + "Future HashMap does not match dependencies list in size: HashMap Size: " + future_end_map_.size() + "List Size: " + future.size();;
         backward_passed_ = true;
         // TODO: Ensure that this is the edge value
         ArrayList<Float> future_list = new ArrayList();
@@ -119,11 +119,11 @@ public class Task {
         }
         Collections.sort(future_list);
         late_end = future_list.get(0);
-        assert late_end >= 0;
+        assert late_end >= 0 : "In " + name + ": " + "Negative late end of " + late_end;
         late_start = late_end - time;
         float_time = late_start - early_start;
-        assert late_start >= 0;
-        assert float_time >= 0;
+        assert late_start >= 0 : "In " + name + ": " + "Negative late start of " + late_start;
+        assert float_time >= 0 : "In " + name + ": " + "Negative float time of " + float_time;
         for(Task t : dependencies) {
             t.backwardNotify(this);
         }
@@ -134,8 +134,8 @@ public class Task {
      * To only be called on the single head element
      */
     public void forwardPassStart() {
-        assert dependencies.size() == 0;
-        assert !forward_passed_ && !backward_passed_;
+        assert dependencies.size() == 0 : "In " + name + ": " + "Attempting to start forward pass on Task with dependencies";
+        assert !forward_passed_ && !backward_passed_ : "In " + name + ": " + "Attempting to start forward pass after pass completion";
         forward_passed_ = true;
         early_start = 0;
         early_end = time;
@@ -150,15 +150,15 @@ public class Task {
      * @param project_time the optimal project completion time
      */
     public void backwardPassStart(float project_time) {
-        assert future_end_map_.size() == 0;
-        assert forward_passed_ && !backward_passed_;
-        assert project_time > 0;
+        assert future_end_map_.size() == 0 : "In " + name + ": " + " Attempting to start backward pass on task with future";
+        assert forward_passed_ && !backward_passed_ : "In " + name + ": " + "Attempting to start backward pass with illegal pre-pass conditions";
+        assert project_time > 0 : "In " + name + ": " + "Project time is negative: " + project_time;
         backward_passed_ = true;
         late_end = project_time;
         late_start = late_end - time;
         float_time = late_start - early_start;
-        assert float_time == 0;
-        assert late_start >= 0;
+        assert float_time == 0 : "In " + name + ": " + "Attempting to start backward pass on non critical element with float time: " + float_time;
+        assert late_start >= 0 : "In " + name + ": " + "Negative late start of " + late_start;
         for(Task t : dependencies) {
             t.backwardNotify(this);
         }

@@ -36,7 +36,7 @@ public class TaskLinker {
         }
 
         for(String future_task : future_) {
-            assert mapping.containsKey(future_task);
+            assert mapping.containsKey(future_task) : "Future Task Not Found: " + future_task;
             future_tasks.add(mapping.get(future_task).task);
         }
 

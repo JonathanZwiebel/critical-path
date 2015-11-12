@@ -4,7 +4,7 @@
 public class TaskMapTester {
     public static void main(String[] args) {
         TaskMap project = new TaskMap();
-        customTest(project);
+        spaghettiTest(project);
 
         project.link();
         project.forwardPass();
@@ -25,8 +25,12 @@ public class TaskMapTester {
 
     // http://www.lindsay-sherwin.co.uk/project_framework/images/cpa_spaghetti.jpg
     public static void spaghettiTest(TaskMap project) {
-        project.put("Get Ingrediants", 5, new String[]{}, new String[]{"Cook Spaghetti", "Prepare Egg Sauce", "Cook Bacon"});
-
-
+        project.put("Get Ingredients", 5, new String[]{}, new String[]{"Cook Spaghetti", "Prepare Egg Sauce", "Cook Bacon"});
+        project.put("Cook Spaghetti", 10, new String[]{"Get Ingredients"}, new String[]{"Drain Spaghetti"});
+        project.put("Prepare Egg Sauce", 4, new String[]{"Get Ingredients"}, new String[]{"Complete Sauce"});
+        project.put("Cook Bacon", 6, new String[]{"Get Ingredients"}, new String[]{"Complete Space"});
+        project.put("Drain Spaghetti", 3, new String[]{"Cook Spaghetti"}, new String[]{"Mix Sauce and Spaghetti"});
+        project.put("Complete Sauce", 3, new String[]{"Prepare Egg Sauce", "Cook Bacon"}, new String[]{"Mix Sauce and Spaghetti"});
+        project.put("Mix Sauce and Spaghetti", 3, new String[]{"Drain Spaghetti", "Complete Sauce"}, new String[]{});
     }
 }

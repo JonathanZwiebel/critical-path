@@ -8,7 +8,7 @@ public class TaskBoundedMapTester {
 
         project.link();
         project.forwardPass();
-        project.backwarPass();
+        project.backwardPass();
 
         for(TaskLinker linker : project.mapping.values()) {
             System.out.print(linker.task);

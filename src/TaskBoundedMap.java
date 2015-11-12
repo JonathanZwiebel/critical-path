@@ -74,14 +74,14 @@ public class TaskBoundedMap {
      * O(n * lg(n)) time
      */
     public void forwardPass() {
-        assert linked_ = true;
+        assert linked_ = true : "Forward passing before linked";
         head_.forwardPassStart();
         project_time_ = tail_.early_end;
     }
 
-    public void backwarPass() {
-        assert linked_ = true;
-        assert project_time_ >= 0;
+    public void backwardPass() {
+        assert linked_ = true : "Backward passing before linked";
+        assert project_time_ >= 0 : "Negative project time: " + project_time_;
         tail_.backwardPassStart(project_time_);
     }
 }

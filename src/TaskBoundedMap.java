@@ -13,42 +13,43 @@ import java.util.HashMap;
  * link - Links all of the tasks together to create a double linked list - O(n^2) // TODO: Fix this
  * forwardPass - Performs a forward pass on the tasks in the map - O(n * lg(n))? // TODO: Verify complexity
  */
-public class TaskMap {
+public class TaskBoundedMap {
     HashMap<String, TaskLinker> mapping;
     Task head_ = null, tail_ = null;
     boolean linked_;
     float project_time_;
 
-    public TaskMap() {
+    public TaskBoundedMap() {
         mapping =  new HashMap();
         linked_ = false;
         project_time_  = -1;
     }
 
     /**
-     * Adds an element to this TaskMap. Must be done before passes
+     * Adds an element to this TaskBoundedMap. Must be done before passes
      * O(1) time
      * @param name unique identifier of the task
      * @param time time of the task
      * @param dependencies names of the tasks the precede this task
      * @param future names of the tasks that the completion of this task allows to begin
      * TODO: Only pass past tasks, calculate future tasks. Will ensure that is full overlap.
+     * TODO: Salt the names to allow for multiple entries of the same identifier
      */
     public void put(String name, float time, String[] dependencies, String[] future)  {
-        assert !linked_;
-        assert !mapping.containsKey(name);
-        assert !name.isEmpty();
-        assert time >= 0;
+        assert !linked_ : "Task Put into Linked TaskBoundedMap";
+        assert !mapping.containsKey(name) : "Repeat name task: " + name;
+        assert !name.isEmpty() : "Attempting to put nameless task into map";
+        assert time >= 0 : "Task with negative time added to map: " + name + " with time " + time;
 
         Task task = new Task(name, time);
 
         if(dependencies.length == 0) {
-            assert head_ == null;
+            assert head_ == null : "Multiple heads being attached to map: " + name + " conflicts with " + head_.name;
             head_ = task;
         }
 
         if(future.length == 0) {
-            assert tail_ == null;
+            assert tail_ == null  : "Multiple tails being attached to map: " + name + " conflicts with " + head_.name;
             tail_ = task;
         }
 

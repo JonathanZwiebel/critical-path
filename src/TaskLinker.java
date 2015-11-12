@@ -3,11 +3,11 @@ import java.util.HashMap;
 
 /**
  * Constructed before the tasks are constructed. Takes in the dependencies and future events by Name. Passes the names
- * to the Task as an ArrayList. Created by the TaskMap. This class is needed because the Tasks cannot be linked to
+ * to the Task as an ArrayList. Created by the TaskBoundedMap. This class is needed because the Tasks cannot be linked to
  * future Tasks before those Tasks are created
  */
 public class TaskLinker {
-    public Task task; // Reference to the task is stored in TaskMap
+    public Task task; // Reference to the task is stored in TaskBoundedMap
     private ArrayList<String> dependencies_, future_;
 
     /**
@@ -31,12 +31,12 @@ public class TaskLinker {
         ArrayList<Task> future_tasks = new ArrayList();
 
         for(String dependent_task : dependencies_) {
-            assert mapping.containsKey(dependent_task);
+            assert mapping.containsKey(dependent_task) : "Dependant Task Not Found: " + dependent_task + " for " + task.name;
             dependencies_tasks.add(mapping.get(dependent_task).task);
         }
 
         for(String future_task : future_) {
-            assert mapping.containsKey(future_task) : "Future Task Not Found: " + future_task;
+            assert mapping.containsKey(future_task) : "Future Task Not Found: " + future_task + " for " + task.name;
             future_tasks.add(mapping.get(future_task).task);
         }
 

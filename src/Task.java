@@ -20,7 +20,7 @@ public class Task {
     private boolean forward_passed_, backward_passed_, linked_;
 
     /**
-     * Sole constructor, to be called by TaskMap. Creates an task without the reference ArrayLists.
+     * Sole constructor, to be called by TaskBoundedMap. Creates an task without the reference ArrayLists.
      * @param name unique task identifier
      * @param time time to complete this task
      */
@@ -132,7 +132,7 @@ public class Task {
     }
 
     /**
-     * Starts the forward pass of the entire TaskMap
+     * Starts the forward pass of the entire TaskBoundedMap
      * To only be called on the single head element
      */
     public void forwardPassStart() {
@@ -147,7 +147,7 @@ public class Task {
     }
 
     /**
-     * Starts the backward pass of the entire TaskMap
+     * Starts the backward pass of the entire TaskBoundedMap
      * To only be called on the single tail element
      * @param project_time the optimal project completion time
      */

@@ -25,8 +25,8 @@ public class Task {
      * @param time time to complete this task
      */
     public Task(String name, float time) {
-        assert  time >= 0;
-        assert !name.isEmpty();
+        assert  time >= 0 : "Negative task time: " + name + " with time " + time;
+        assert !name.isEmpty() : "Nameless task";
         forward_passed_ = false;
         backward_passed_ = false;
         linked_ = false;
@@ -41,7 +41,7 @@ public class Task {
      * @param future tasks that the completion of this task allows to start
      */
     public void linkTask(ArrayList<Task> dependencies, ArrayList<Task> future) {
-        assert linked_ == false;
+        assert linked_ == false : "Duplicate call to linkTask";
         this.dependencies = dependencies;
         this.future = future;
         dependencies_start_map_ = new HashMap<>();
@@ -53,13 +53,12 @@ public class Task {
      * To be called be a task A preceding this task when A has found it's early end time on the forward pass
      * Notifier will add to the dependencies hash map the notification task and its early end time
      * @param notifier preceding task
-     * @param early_start early end time of preceding task
      */
-    public void forwardNotify(Task notifier, float early_start) {
-        assert early_start >= 0;
+    public void forwardNotify(Task notifier) {
+        assert notifier.early_end >= 0 : "Negative early end time from notifying task " + notifier.name;
         assert dependencies.contains(notifier);
         assert !forward_passed_ && !backward_passed_;
-        dependencies_start_map_.put(notifier, early_start);
+        dependencies_start_map_.put(notifier, notifier.early_end);
         if(dependencies_start_map_.size() == dependencies.size()) {
             forwardPass();
         }
@@ -84,7 +83,7 @@ public class Task {
         assert early_start >= 0;
         early_end = early_start + time;
         for(Task t : future) {
-            t.forwardNotify(this, early_end);
+            t.forwardNotify(this);
         }
     }
 
@@ -92,13 +91,12 @@ public class Task {
      * To be called be a task B to which this task is a precedent when B has found it's late start time on the
      * backward pass. Notifier will add to the future hash map the notification task and its late start time
      * @param notifier future task
-     * @param late_end late start time of preceding task
      */
-    public void backwardNotify(Task notifier, float late_end) {
+    public void backwardNotify(Task notifier) {
         assert forward_passed_ && !backward_passed_;
         assert future.contains(notifier);
-        assert late_end >= 0;
-        future_end_map_.put(notifier, late_end);
+        assert notifier.late_start >= 0;
+        future_end_map_.put(notifier, notifier.late_start);
         if(future_end_map_.size() == future.size()) {
             backwardPass();
         }
@@ -127,7 +125,7 @@ public class Task {
         assert late_start >= 0;
         assert float_time >= 0;
         for(Task t : dependencies) {
-            t.backwardNotify(this, late_start);
+            t.backwardNotify(this);
         }
     }
 
@@ -142,7 +140,7 @@ public class Task {
         early_start = 0;
         early_end = time;
         for(Task t : future) {
-            t.forwardNotify(this, early_end);
+            t.forwardNotify(this);
         }
     }
 
@@ -162,7 +160,7 @@ public class Task {
         assert float_time == 0;
         assert late_start >= 0;
         for(Task t : dependencies) {
-            t.backwardNotify(this, late_start);
+            t.backwardNotify(this);
         }
     }
 

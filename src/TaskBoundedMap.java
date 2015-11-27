@@ -1,3 +1,6 @@
+import org.jsfml.graphics.*;
+import org.jsfml.system.Vector2f;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,15 +16,15 @@ import java.util.HashMap;
  * link - Links all of the tasks together to create a double linked list - O(n^2) // TODO: Fix this
  * forwardPass - Performs a forward pass on the tasks in the map - O(n * lg(n))? // TODO: Verify complexity
  */
-public class TaskBoundedMap {
-    HashMap<String, TaskLinker> mapping;
-    Task head_ = null, tail_ = null;
-    boolean linked_;
-    float project_time_;
+public class TaskBoundedMap implements Drawable {
+    private HashMap<String, TaskLinker> mapping;
+    private Task head_ = null, tail_ = null;
+    public boolean linked;
+    private float project_time_;
 
     public TaskBoundedMap() {
         mapping =  new HashMap();
-        linked_ = false;
+        linked = false;
         project_time_  = -1;
     }
 
@@ -36,7 +39,7 @@ public class TaskBoundedMap {
      * TODO: Salt the names to allow for multiple entries of the same identifier
      */
     public void put(String name, float time, String[] dependencies, String[] future)  {
-        assert !linked_ : "Task Put into Linked TaskBoundedMap";
+        assert !linked : "Task Put into Linked TaskBoundedMap";
         assert !mapping.containsKey(name) : "Repeat name task: " + name;
         assert !name.isEmpty() : "Attempting to put nameless task into map";
         assert time >= 0 : "Task with negative time added to map: " + name + " with time " + time;
@@ -66,7 +69,7 @@ public class TaskBoundedMap {
         for(TaskLinker linker : mapping.values()) {
             linker.linkTask(mapping);
         }
-        linked_ = true;
+        linked = true;
     }
 
     /**
@@ -74,14 +77,23 @@ public class TaskBoundedMap {
      * O(n * lg(n)) time
      */
     public void forwardPass() {
-        assert linked_ = true : "Forward passing before linked";
+        assert linked = true : "Forward passing before linked";
         head_.forwardPassStart();
         project_time_ = tail_.early_end;
     }
 
     public void backwardPass() {
-        assert linked_ = true : "Backward passing before linked";
+        assert linked = true : "Backward passing before linked";
         assert project_time_ >= 0 : "Negative project time: " + project_time_;
         tail_.backwardPassStart(project_time_);
+    }
+
+    public void draw(RenderTarget target, RenderStates states) {
+        System.out.println("Task Bounded Map Display draw called");
+        if(linked) {
+           for(TaskLinker linker : mapping.values()) {
+               linker.task.draw(target, states);
+           }
+        }
     }
 }

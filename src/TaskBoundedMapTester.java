@@ -16,7 +16,6 @@ public class TaskBoundedMapTester {
         map.forwardPass();
         map.backwardPass();
 
-        TaskBoundedMapDisplay display = new TaskBoundedMapDisplay(map);
 
         RenderWindow rw = new RenderWindow();
         rw.create(new VideoMode(1000, 1000), "Task Bounded Map Display Test");
@@ -25,7 +24,7 @@ public class TaskBoundedMapTester {
 
         while(rw.isOpen()) {
             rw.clear(Color.CYAN);
-            display.draw(rw, RenderStates.DEFAULT);
+            map.draw(rw, RenderStates.DEFAULT);
             rw.display();
 
             for(Event event : rw.pollEvents()) {

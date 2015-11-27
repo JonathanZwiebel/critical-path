@@ -1,3 +1,6 @@
+import org.jsfml.graphics.*;
+import org.jsfml.system.Vector2f;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +12,7 @@ import java.util.HashMap;
  * This class models a single dependency-based task with a constant completion time and can communicate
  * with past or future tasks to carry out a Forward and Backward pass.
  */
-public class Task {
+public class Task implements Drawable {
     // TODO: Rename future
     // TODO: Probably don't use HashMap and ArrayLists together
     private HashMap<Task, Float> dependencies_start_map_, future_end_map_;
@@ -18,6 +21,10 @@ public class Task {
     public float early_start, late_start, early_end, late_end, time;
     public float float_time;
     private boolean forward_passed_, backward_passed_, linked_;
+
+    //TODO: Remove this
+    static int counter = 0;
+    private int id;
 
     /**
      * Sole constructor, to be called by TaskBoundedMap. Creates an task without the reference ArrayLists.
@@ -32,6 +39,8 @@ public class Task {
         linked_ = false;
         this.name = name;
         this.time = time;
+        id = counter;
+        counter++;
     }
 
     // TODO: Ensure that there are no collisions between dependencies and future
@@ -180,5 +189,13 @@ public class Task {
         }
         ret += "\n";
         return ret;
+    }
+
+    public void draw(RenderTarget target, RenderStates states) {
+        assert linked_;
+        RectangleShape rect = new RectangleShape(new Vector2f(time * 20, 20));
+        rect.setPosition(early_start * 20, id * 25);
+        rect.setFillColor(Color.MAGENTA);
+        target.draw(rect);
     }
 }

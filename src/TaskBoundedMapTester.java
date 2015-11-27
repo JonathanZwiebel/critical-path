@@ -1,18 +1,40 @@
+import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.VideoMode;
+import org.jsfml.window.event.Event;
+
 /**
  * Tests the TaskBoundedMap, TaskLinker and Task classes
  */
 public class TaskBoundedMapTester {
     public static void main(String[] args) {
-        TaskBoundedMap project = new TaskBoundedMap();
-        spaghettiTest(project);
+        TaskBoundedMap map = new TaskBoundedMap();
+        spaghettiTest(map);
 
-        project.link();
-        project.forwardPass();
-        project.backwardPass();
+        map.link();
+        map.forwardPass();
+        map.backwardPass();
 
-        for(TaskLinker linker : project.mapping.values()) {
-            System.out.print(linker.task);
-            System.out.println();
+        TaskBoundedMapDisplay display = new TaskBoundedMapDisplay(map);
+
+        RenderWindow rw = new RenderWindow();
+        rw.create(new VideoMode(1000, 1000), "Task Bounded Map Display Test");
+        rw.setFramerateLimit(30);
+
+
+        while(rw.isOpen()) {
+            rw.clear(Color.CYAN);
+            rw.display();
+
+            for(Event event : rw.pollEvents()) {
+                switch(event.type) {
+                    case CLOSED:
+                        rw.close();
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 

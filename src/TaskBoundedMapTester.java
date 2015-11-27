@@ -1,4 +1,5 @@
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
@@ -24,6 +25,7 @@ public class TaskBoundedMapTester {
 
         while(rw.isOpen()) {
             rw.clear(Color.CYAN);
+            display.draw(rw, RenderStates.DEFAULT);
             rw.display();
 
             for(Event event : rw.pollEvents()) {

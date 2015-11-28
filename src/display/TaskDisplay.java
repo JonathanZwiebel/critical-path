@@ -1,8 +1,11 @@
+package display;
+
 import org.jsfml.graphics.*;
 import org.jsfml.system.Vector2f;
+import taskmap.Task;
 
 /**
- * This class is to be constructed and maintained by a TaskObject. This display a single Task.
+ * This class is to be constructed and maintained by a TaskObject. This display a single taskmap.Task.
  *
  * @author Jonathan Zwiebel
  * @version November 27th, 2015

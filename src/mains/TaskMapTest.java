@@ -1,24 +1,27 @@
+package mains;
+
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
+import taskmap.TaskMap;
 
 /**
- * Tests the TaskBoundedMap, TaskBuilder and Task classes
+ * Tests the taskmap.TaskMap, taskmap.TaskBuilder and taskmap.Task classes
  */
-public class TaskBoundedMapTester {
+public class TaskMapTest {
     public static void main(String[] args) {
-        TaskBoundedMap map = new TaskBoundedMap();
+        TaskMap map = new TaskMap();
         spaghettiTest(map);
         map.crit();
 
         RenderWindow rw = new RenderWindow();
         VideoMode desktop = VideoMode.getDesktopMode();
 
-        rw.create(new VideoMode(3 * desktop.width / 4, 3 * desktop.height / 4, 3 * desktop.bitsPerPixel / 4), "Task Bounded Map Display Test");
-        //rw.create(new VideoMode(desktop.width, desktop.height, desktop.bitsPerPixel), "Task Bounded Map Display Test",  RenderWindow.FULLSCREEN);
+        rw.create(new VideoMode(3 * desktop.width / 4, 3 * desktop.height / 4, 3 * desktop.bitsPerPixel / 4), "taskmap.Task Bounded Map Display Test");
+        //rw.create(new VideoMode(desktop.width, desktop.height, desktop.bitsPerPixel), "taskmap.Task Bounded Map Display Test",  RenderWindow.FULLSCREEN);
         rw.setFramerateLimit(30);
 
 
@@ -45,7 +48,7 @@ public class TaskBoundedMapTester {
     }
 
     // http://www.lindsay-sherwin.co.uk/project_framework/images/cpa_spaghetti.jpg
-    public static void spaghettiTest(TaskBoundedMap project) {
+    public static void spaghettiTest(TaskMap project) {
         project.put("Get Ingredients", 5);
         project.put("Cook Spaghetti", 10);
         project.put("Prepare Egg Sauce", 4);

@@ -1,24 +1,28 @@
+package display;
+
 import org.jsfml.graphics.Drawable;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderTarget;
+import taskmap.TaskMap;
+import taskmap.TaskBuilder;
 
 /**
- * This class handles the display of a TaskBoundedMap by delegating each Task to draw itself
+ * This class handles the display of a taskmap.TaskMap by delegating each taskmap.Task to draw itself
  *
  * TODO[Major]: Allow for drawing before linkage
  * TODO: Decide if this makes more sense as a private class
  * @author Jonathan Zwiebel
  * @version November 27th, 2015
  */
-public class TaskBoundedMapDisplay implements Drawable {
-    private TaskBoundedMap map_;
+public class TaskMapDisplay implements Drawable {
+    private TaskMap map_;
 
     /**
-     * Constructs a TaskBoundedMapDisplay object that displays a single TaskBoundedMap
-     * Called by a TaskBoundedMap
+     * Constructs a display.TaskMapDisplay object that displays a single taskmap.TaskMap
+     * Called by a taskmap.TaskMap
      * @param map
      */
-    public TaskBoundedMapDisplay(TaskBoundedMap map) {
+    public TaskMapDisplay(TaskMap map) {
         map_ = map;
     }
 

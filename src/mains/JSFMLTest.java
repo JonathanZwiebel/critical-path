@@ -1,3 +1,5 @@
+package mains;
+
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.window.VideoMode;
@@ -6,7 +8,7 @@ import org.jsfml.window.event.Event;
 /**
  * Created by Jonathan Zwiebel
  */
-public class Main {
+public class JSFMLTest {
     public static void main(String args[]) {
         RenderWindow rw = new RenderWindow();
         rw.create(new VideoMode(1000, 1000), "Render Window");

@@ -1,3 +1,6 @@
+package taskmap;
+
+import display.TaskDisplay;
 import org.jsfml.graphics.*;
 
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ public class Task implements Drawable {
     private TaskDisplay display_;
 
     /**
-     * Sole constructor, to be called by TaskBoundedMap. Creates an task without the reference ArrayLists.
+     * Sole constructor, to be called by taskmap.TaskMap. Creates an task without the reference ArrayLists.
      * @param name unique task identifier
      * @param time time_ to complete this task
      */
@@ -37,7 +40,7 @@ public class Task implements Drawable {
 
     // TODO: Ensure that there are no collisions between dependencies_ and future_
     /**
-     * To be called by TaskBuilder. Links this Task to the dependencies_ and future_ tasks.
+     * To be called by taskmap.TaskBuilder. Links this taskmap.Task to the dependencies_ and future_ tasks.
      * @param dependencies tasks needed before this task
      * @param future tasks that the completion of this task allows to start
      */
@@ -123,11 +126,11 @@ public class Task implements Drawable {
     }
 
     /**
-     * Starts the forward pass of the entire TaskBoundedMap
+     * Starts the forward pass of the entire taskmap.TaskMap
      * To only be called on the single head element
      */
     public void forwardPassStart() {
-        assert dependencies_.size() == 0 : "In " + name_ + ": " + "Attempting to start forward pass on Task with dependencies_";
+        assert dependencies_.size() == 0 : "In " + name_ + ": " + "Attempting to start forward pass on taskmap.Task with dependencies_";
         early_start_ = 0;
         early_end_ = time_;
         for(Task t : future_) {
@@ -136,7 +139,7 @@ public class Task implements Drawable {
     }
 
     /**
-     * Starts the backward pass of the entire TaskBoundedMap
+     * Starts the backward pass of the entire taskmap.TaskMap
      * To only be called on the single tail element
      * @param project_time the optimal project completion time_
      */

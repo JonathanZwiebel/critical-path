@@ -1,7 +1,8 @@
+package taskmap;
+
+import display.TaskMapDisplay;
 import org.jsfml.graphics.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -11,20 +12,20 @@ import java.util.HashMap;
  * // TODO: Allow for multiple heads and tails by adding ghosts to the end
  * // TODO: Add backward pass
  */
-public class TaskBoundedMap implements Drawable {
+public class TaskMap implements Drawable {
     private HashMap<String, TaskBuilder> mapping;
-    private TaskBoundedMapDisplay display;
+    private TaskMapDisplay display;
     private Task head_ = null, tail_ = null;
     private float project_time_;
 
-    public TaskBoundedMap() {
+    public TaskMap() {
         mapping =  new HashMap();
         project_time_  = -1;
-        display = new TaskBoundedMapDisplay(this);
+        display = new TaskMapDisplay(this);
     }
 
     /**
-     * Adds an element to this TaskBoundedMap without specifying dependencies and future
+     * Adds an element to this taskmap.TaskMap without specifying dependencies and future
      *
      * @param name unique identifier of the task
      * @param time time of the task
@@ -33,7 +34,7 @@ public class TaskBoundedMap implements Drawable {
     public void put(String name, float time) {
         assert !mapping.containsKey(name) : "Repeat name task: " + name;
         assert !name.isEmpty() : "Attempting to put nameless task into map";
-        assert time >= 0 : "Task with negative time added to map: " + name + " with time " + time;
+        assert time >= 0 : "taskmap.Task with negative time added to map: " + name + " with time " + time;
 
         TaskBuilder builder = new TaskBuilder(new Task(name, time));
         mapping.put(name, builder);
@@ -101,7 +102,7 @@ public class TaskBoundedMap implements Drawable {
     }
 
     /**
-     * Draws this TaskBoundedMap using the TaskBoundedMapDisplay
+     * Draws this taskmap.TaskMap using the display.TaskMapDisplay
      *
      * @param target RenderTarget on which to draw
      * @param states RenderStates with how to draw

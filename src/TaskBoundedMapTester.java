@@ -12,11 +12,7 @@ public class TaskBoundedMapTester {
     public static void main(String[] args) {
         TaskBoundedMap map = new TaskBoundedMap();
         spaghettiTest(map);
-
         map.crit();
-        map.changeTime("Prepare Egg Sauce", 25);
-        map.put("Eat!", 7);
-        map.link("Mix Sauce and Spaghetti", "Eat!");
 
         RenderWindow rw = new RenderWindow();
         VideoMode desktop = VideoMode.getDesktopMode();
@@ -59,12 +55,21 @@ public class TaskBoundedMapTester {
 
     // http://www.lindsay-sherwin.co.uk/project_framework/images/cpa_spaghetti.jpg
     public static void spaghettiTest(TaskBoundedMap project) {
-        project.put("Get Ingredients", 5, new String[]{}, new String[]{"Cook Spaghetti", "Prepare Egg Sauce", "Cook Bacon"});
-        project.put("Cook Spaghetti", 10, new String[]{"Get Ingredients"}, new String[]{"Drain Spaghetti"});
-        project.put("Prepare Egg Sauce", 4, new String[]{"Get Ingredients"}, new String[]{"Complete Sauce"});
-        project.put("Cook Bacon", 6, new String[]{"Get Ingredients"}, new String[]{"Complete Sauce"});
-        project.put("Drain Spaghetti", 3, new String[]{"Cook Spaghetti"}, new String[]{"Mix Sauce and Spaghetti"});
-        project.put("Complete Sauce", 5, new String[]{"Prepare Egg Sauce", "Cook Bacon"}, new String[]{"Mix Sauce and Spaghetti"});
-        project.put("Mix Sauce and Spaghetti", 7, new String[]{"Drain Spaghetti", "Complete Sauce"}, new String[]{});
+        project.put("Get Ingredients", 5);
+        project.put("Cook Spaghetti", 10);
+        project.put("Prepare Egg Sauce", 4);
+        project.put("Cook Bacon", 6);
+        project.put("Drain Spaghetti", 3);
+        project.put("Complete Sauce", 5);
+        project.put("Mix Sauce and Spaghetti", 7);
+
+        project.link("Get Ingredients", "Cook Spaghetti");
+        project.link("Get Ingredients", "Prepare Egg Sauce");
+        project.link("Get Ingredients", "Cook Bacon");
+        project.link("Cook Spaghetti", "Drain Spaghetti");
+        project.link("Prepare Egg Sauce", "Complete Sauce");
+        project.link("Cook Bacon", "Complete Sauce");
+        project.link("Drain Spaghetti", "Mix Sauce and Spaghetti");
+        project.link("Complete Sauce", "Mix Sauce and Spaghetti");
     }
 }

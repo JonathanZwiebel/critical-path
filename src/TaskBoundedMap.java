@@ -63,7 +63,6 @@ public class TaskBoundedMap implements Drawable {
     public void link(String dependency, String future) {
         mapping.get(dependency).future_.add(future);
         mapping.get(future).dependencies_.add(dependency);
-        crit();
     }
 
 
@@ -114,8 +113,6 @@ public class TaskBoundedMap implements Drawable {
      */
     public void changeTime(String name, float new_time) {
         mapping.get(name).task.setTime(new_time);
-        forwardPass();
-        backwardPass();
     }
 
     /**

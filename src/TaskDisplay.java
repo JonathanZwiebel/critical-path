@@ -21,7 +21,7 @@ public class TaskDisplay implements Drawable {
 
     public void draw(RenderTarget target, RenderStates state) {
         RectangleShape early_rect = new RectangleShape(new Vector2f(task_.getTime() * 20, 20));
-        early_rect.setPosition(task_.getEarlyStart() * 20, id * 25);
+        early_rect.setPosition(task_.getEarlyStart() * 20, id * 30);
 
         if(task_.getFloatTime() == 0) {
             early_rect.setFillColor(Color.BLUE);
@@ -31,7 +31,7 @@ public class TaskDisplay implements Drawable {
         }
 
         RectangleShape late_rect = new RectangleShape(new Vector2f(task_.getFloatTime() * 20, 20));
-        late_rect.setPosition(task_.getEarlyEnd() * 20, id * 25);
+        late_rect.setPosition(task_.getEarlyEnd() * 20, id * 30);
         late_rect.setFillColor(Color.GREEN);
 
         target.draw(early_rect);

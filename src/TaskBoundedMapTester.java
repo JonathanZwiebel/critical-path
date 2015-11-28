@@ -1,6 +1,7 @@
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.window.Keyboard;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
@@ -15,14 +16,15 @@ public class TaskBoundedMapTester {
         map.link();
         map.forwardPass();
         map.backwardPass();
-        map.changeTime("Cook Spaghetti", 20);
-        map.link();
-        map.forwardPass();
-        map.backwardPass();
+        map.changeTime("Prepare Egg Sauce", 25);
 
         RenderWindow rw = new RenderWindow();
-        rw.create(new VideoMode(1000, 1000), "Task Bounded Map Display Test");
+        VideoMode desktop = VideoMode.getDesktopMode();
+
+        rw.create(new VideoMode(3 * desktop.width / 4, 3 * desktop.height / 4, 3 * desktop.bitsPerPixel / 4), "Task Bounded Map Display Test");
+        //rw.create(new VideoMode(desktop.width, desktop.height, desktop.bitsPerPixel), "Task Bounded Map Display Test",  RenderWindow.FULLSCREEN);
         rw.setFramerateLimit(30);
+
 
 
         while(rw.isOpen()) {
@@ -34,6 +36,11 @@ public class TaskBoundedMapTester {
                 switch(event.type) {
                     case CLOSED:
                         rw.close();
+                        break;
+                    case KEY_RELEASED:
+                        if(event.asKeyEvent().key == Keyboard.Key.Q) {
+                            rw.close();
+                        }
                         break;
                     default:
                         break;
@@ -57,7 +64,7 @@ public class TaskBoundedMapTester {
         project.put("Prepare Egg Sauce", 4, new String[]{"Get Ingredients"}, new String[]{"Complete Sauce"});
         project.put("Cook Bacon", 6, new String[]{"Get Ingredients"}, new String[]{"Complete Sauce"});
         project.put("Drain Spaghetti", 3, new String[]{"Cook Spaghetti"}, new String[]{"Mix Sauce and Spaghetti"});
-        project.put("Complete Sauce", 3, new String[]{"Prepare Egg Sauce", "Cook Bacon"}, new String[]{"Mix Sauce and Spaghetti"});
-        project.put("Mix Sauce and Spaghetti", 3, new String[]{"Drain Spaghetti", "Complete Sauce"}, new String[]{});
+        project.put("Complete Sauce", 5, new String[]{"Prepare Egg Sauce", "Cook Bacon"}, new String[]{"Mix Sauce and Spaghetti"});
+        project.put("Mix Sauce and Spaghetti", 7, new String[]{"Drain Spaghetti", "Complete Sauce"}, new String[]{});
     }
 }

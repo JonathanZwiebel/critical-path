@@ -31,12 +31,12 @@ public class TaskBuilder {
         ArrayList<Task> future_tasks = new ArrayList();
 
         for(String dependent_task : dependencies_) {
-            assert mapping.containsKey(dependent_task) : "Dependant Task Not Found: " + dependent_task + " for " + task.name;
+            assert mapping.containsKey(dependent_task) : "Dependant Task Not Found: " + dependent_task + " for " + task.getName();
             dependencies_tasks.add(mapping.get(dependent_task).task);
         }
 
         for(String future_task : future_) {
-            assert mapping.containsKey(future_task) : "Future Task Not Found: " + future_task + " for " + task.name;
+            assert mapping.containsKey(future_task) : "Future Task Not Found: " + future_task + " for " + task.getName();
             future_tasks.add(mapping.get(future_task).task);
         }
 

@@ -28,10 +28,8 @@ public class TaskBoundedMapDisplay implements Drawable {
      * @param states RenderStates normally left as default
      */
     public void draw(RenderTarget target, RenderStates states) {
-        if(map_.linked) {
-            for(TaskBuilder builder : map_.getMapping().values()) {
-                builder.task.draw(target, states);
-            }
+        for(TaskBuilder builder : map_.getMapping().values()) {
+            builder.task.draw(target, states);
         }
     }
 }

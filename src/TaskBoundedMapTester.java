@@ -15,7 +15,10 @@ public class TaskBoundedMapTester {
         map.link();
         map.forwardPass();
         map.backwardPass();
-
+        map.changeTime("Cook Spaghetti", 20);
+        map.link();
+        map.forwardPass();
+        map.backwardPass();
 
         RenderWindow rw = new RenderWindow();
         rw.create(new VideoMode(1000, 1000), "Task Bounded Map Display Test");

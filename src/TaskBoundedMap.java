@@ -15,12 +15,10 @@ public class TaskBoundedMap implements Drawable {
     private HashMap<String, TaskBuilder> mapping;
     private TaskBoundedMapDisplay display;
     private Task head_ = null, tail_ = null;
-    public boolean linked;
     private float project_time_;
 
     public TaskBoundedMap() {
         mapping =  new HashMap();
-        linked = false;
         project_time_  = -1;
         display = new TaskBoundedMapDisplay(this);
     }
@@ -36,7 +34,6 @@ public class TaskBoundedMap implements Drawable {
      * TODO: Salt the names to allow for multiple entries of the same identifier
      */
     public void put(String name, float time, String[] dependencies, String[] future)  {
-        assert !linked : "Task Put into Linked TaskBoundedMap";
         assert !mapping.containsKey(name) : "Repeat name task: " + name;
         assert !name.isEmpty() : "Attempting to put nameless task into map";
         assert time >= 0 : "Task with negative time added to map: " + name + " with time " + time;
@@ -44,12 +41,12 @@ public class TaskBoundedMap implements Drawable {
         Task task = new Task(name, time);
 
         if(dependencies.length == 0) {
-            assert head_ == null : "Multiple heads being attached to map: " + name + " conflicts with " + head_.name;
+            assert head_ == null : "Multiple heads being attached to map: " + name + " conflicts with " + head_.getName();
             head_ = task;
         }
 
         if(future.length == 0) {
-            assert tail_ == null  : "Multiple tails being attached to map: " + name + " conflicts with " + head_.name;
+            assert tail_ == null  : "Multiple tails being attached to map: " + name + " conflicts with " + head_.getName();
             tail_ = task;
         }
 
@@ -59,31 +56,38 @@ public class TaskBoundedMap implements Drawable {
 
     /**
      * Links all of the tasks into a double linked list
-     * TODO: Allow for relinking
      */
     public void link() {
-        for(TaskBuilder linker : mapping.values()) {
-            linker.linkTask(mapping);
+        for(TaskBuilder builder : mapping.values()) {
+            builder.linkTask(mapping);
         }
-        linked = true;
     }
 
     /**
      * Performs a forward pass on all of the tasks starting from the head task
      */
     public void forwardPass() {
-        assert linked = true : "Forward passing before linked";
         head_.forwardPassStart();
-        project_time_ = tail_.early_end;
+        project_time_ = tail_.getEarlyEnd();
     }
 
     /**
      * Performs a backward pass on all of the tasks starting from the tail task
      */
     public void backwardPass() {
-        assert linked = true : "Backward passing before linked";
         assert project_time_ >= 0 : "Negative project time: " + project_time_;
         tail_.backwardPassStart(project_time_);
+    }
+
+    /**
+     * Changes the completion time for a task
+     * @param name Name of task to change time
+     * @param new_time New completion time
+     */
+    public void changeTime(String name, float new_time) {
+        mapping.get(name).task.setTime(new_time);
+        forwardPass();
+        backwardPass();
     }
 
     /**

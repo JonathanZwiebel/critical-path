@@ -18,6 +18,7 @@ import java.util.HashMap;
  */
 public class TaskBoundedMap implements Drawable {
     private HashMap<String, TaskLinker> mapping;
+    private TaskBoundedMapDisplay display;
     private Task head_ = null, tail_ = null;
     public boolean linked;
     private float project_time_;
@@ -26,6 +27,7 @@ public class TaskBoundedMap implements Drawable {
         mapping =  new HashMap();
         linked = false;
         project_time_  = -1;
+        display = new TaskBoundedMapDisplay(this);
     }
 
     /**
@@ -89,11 +91,10 @@ public class TaskBoundedMap implements Drawable {
     }
 
     public void draw(RenderTarget target, RenderStates states) {
-        System.out.println("Task Bounded Map Display draw called");
-        if(linked) {
-           for(TaskLinker linker : mapping.values()) {
-               linker.task.draw(target, states);
-           }
-        }
+        display.draw(target, states);
+    }
+
+    public HashMap<String, TaskLinker> getMapping() {
+        return mapping;
     }
 }

@@ -10,7 +10,7 @@ import org.jsfml.window.event.Event;
 public class TaskBoundedMapTester {
     public static void main(String[] args) {
         TaskBoundedMap map = new TaskBoundedMap();
-        customTest(map);
+        spaghettiTest(map);
 
         map.link();
         map.forwardPass();

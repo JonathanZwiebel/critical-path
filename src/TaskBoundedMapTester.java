@@ -22,7 +22,6 @@ public class TaskBoundedMapTester {
         rw.setFramerateLimit(30);
 
 
-
         while(rw.isOpen()) {
             rw.clear(Color.BLACK);
             map.draw(rw, RenderStates.DEFAULT);
@@ -43,14 +42,6 @@ public class TaskBoundedMapTester {
                 }
             }
         }
-    }
-
-    public static void customTest(TaskBoundedMap project) {
-        project.put("A", 4, new String[]{}, new String[]{"B", "C"});
-        project.put("B", 7, new String[]{"A"}, new String[]{"E"});
-        project.put("C", 2, new String[]{"A"}, new String[]{"D"});
-        project.put("D", 16, new String[]{"C"}, new String[]{"E"});
-        project.put("E", 1.5f, new String[]{"B", "D"}, new String[]{});
     }
 
     // http://www.lindsay-sherwin.co.uk/project_framework/images/cpa_spaghetti.jpg

@@ -24,34 +24,19 @@ public class TaskBoundedMap implements Drawable {
     }
 
     /**
-     * Adds an element to this TaskBoundedMap. Must be done before passes
-     *
-     * @param name unique identifier of the task
-     * @param time time of the task
-     * @param dependencies names of the tasks the precede this task
-     * @param future names of the tasks that the completion of this task allows to begin
-     * TODO: Only pass past tasks, calculate future tasks. Will ensure that is full overlap.
-     * TODO: Salt the names to allow for multiple entries of the same identifier
-     */
-    public void put(String name, float time, String[] dependencies, String[] future)  {
-        assert !mapping.containsKey(name) : "Repeat name task: " + name;
-        assert !name.isEmpty() : "Attempting to put nameless task into map";
-        assert time >= 0 : "Task with negative time added to map: " + name + " with time " + time;
-
-        Task task = new Task(name, time);
-
-        TaskBuilder builder = new TaskBuilder(task, new ArrayList<String>(Arrays.asList(dependencies)), new ArrayList<String>(Arrays.asList(future)));
-        mapping.put(name, builder);
-    }
-
-    /**
      * Adds an element to this TaskBoundedMap without specifying dependencies and future
      *
      * @param name unique identifier of the task
      * @param time time of the task
+     * TODO: Salt the names to allow for multiple entries of the same identifier
      */
     public void put(String name, float time) {
-        put(name, time, new String[]{}, new String[]{});
+        assert !mapping.containsKey(name) : "Repeat name task: " + name;
+        assert !name.isEmpty() : "Attempting to put nameless task into map";
+        assert time >= 0 : "Task with negative time added to map: " + name + " with time " + time;
+
+        TaskBuilder builder = new TaskBuilder(new Task(name, time));
+        mapping.put(name, builder);
     }
 
     /**

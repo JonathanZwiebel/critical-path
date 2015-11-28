@@ -13,13 +13,11 @@ public class TaskBuilder {
     /**
      * Constructs a TaskBuilder with the dependencies and future tasks by name
      * @param task the task that this shell creates
-     * @param dependencies names of previous tasks
-     * @param future names of future tasks
      */
-    public TaskBuilder(Task task, ArrayList<String> dependencies, ArrayList<String> future) {
+    public TaskBuilder(Task task) {
         this.task = task;
-        dependencies_ = dependencies;
-        future_ = future;
+        dependencies_ = new ArrayList<>();
+        future_ = new ArrayList<>();
     }
 
     /**

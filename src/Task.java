@@ -193,9 +193,21 @@ public class Task implements Drawable {
 
     public void draw(RenderTarget target, RenderStates states) {
         assert linked_;
-        RectangleShape rect = new RectangleShape(new Vector2f(time * 20, 20));
-        rect.setPosition(early_start * 20, id * 25);
-        rect.setFillColor(Color.MAGENTA);
-        target.draw(rect);
+        RectangleShape early_rect = new RectangleShape(new Vector2f(time * 20, 20));
+        early_rect.setPosition(early_start * 20, id * 25);
+
+        if(float_time == 0) {
+            early_rect.setFillColor(Color.BLUE);
+        }
+        else {
+            early_rect.setFillColor(Color.CYAN);
+        }
+
+        RectangleShape late_rect = new RectangleShape(new Vector2f(float_time * 20, 20));
+        late_rect.setPosition(early_end * 20, id * 25);
+        late_rect.setFillColor(Color.GREEN);
+
+        target.draw(early_rect);
+        target.draw(late_rect);
     }
 }

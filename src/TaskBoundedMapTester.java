@@ -5,7 +5,7 @@ import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 /**
- * Tests the TaskBoundedMap, TaskLinker and Task classes
+ * Tests the TaskBoundedMap, TaskBuilder and Task classes
  */
 public class TaskBoundedMapTester {
     public static void main(String[] args) {

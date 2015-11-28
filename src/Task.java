@@ -21,10 +21,8 @@ public class Task implements Drawable {
     public float early_start, late_start, early_end, late_end, time;
     public float float_time;
     private boolean forward_passed_, backward_passed_, linked_;
+    private TaskDisplay display_;
 
-    //TODO: Remove this
-    static int counter = 0;
-    private int id;
 
     /**
      * Sole constructor, to be called by TaskBoundedMap. Creates an task without the reference ArrayLists.
@@ -39,13 +37,12 @@ public class Task implements Drawable {
         linked_ = false;
         this.name = name;
         this.time = time;
-        id = counter;
-        counter++;
+        display_ = new TaskDisplay(this);
     }
 
     // TODO: Ensure that there are no collisions between dependencies and future
     /**
-     * To be called by TaskLinker. Links this Task to the dependencies and future tasks.
+     * To be called by TaskBuilder. Links this Task to the dependencies and future tasks.
      * @param dependencies tasks needed before this task
      * @param future tasks that the completion of this task allows to start
      */
@@ -191,23 +188,9 @@ public class Task implements Drawable {
         return ret;
     }
 
+
     public void draw(RenderTarget target, RenderStates states) {
         assert linked_;
-        RectangleShape early_rect = new RectangleShape(new Vector2f(time * 20, 20));
-        early_rect.setPosition(early_start * 20, id * 25);
-
-        if(float_time == 0) {
-            early_rect.setFillColor(Color.BLUE);
-        }
-        else {
-            early_rect.setFillColor(Color.CYAN);
-        }
-
-        RectangleShape late_rect = new RectangleShape(new Vector2f(float_time * 20, 20));
-        late_rect.setPosition(early_end * 20, id * 25);
-        late_rect.setFillColor(Color.GREEN);
-
-        target.draw(early_rect);
-        target.draw(late_rect);
+        display_.draw(target, states);
     }
 }

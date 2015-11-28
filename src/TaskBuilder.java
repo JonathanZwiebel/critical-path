@@ -6,17 +6,17 @@ import java.util.HashMap;
  * to the Task as an ArrayList. Created by the TaskBoundedMap. This class is needed because the Tasks cannot be linked to
  * future Tasks before those Tasks are created
  */
-public class TaskLinker {
+public class TaskBuilder {
     public Task task; // Reference to the task is stored in TaskBoundedMap
     private ArrayList<String> dependencies_, future_;
 
     /**
-     * Constructs a TaskLinker with the dependencies and future tasks by name
+     * Constructs a TaskBuilder with the dependencies and future tasks by name
      * @param task the task that this shell creates
      * @param dependencies names of previous tasks
      * @param future names of future tasks
      */
-    public TaskLinker(Task task, ArrayList<String> dependencies, ArrayList<String> future) {
+    public TaskBuilder(Task task, ArrayList<String> dependencies, ArrayList<String> future) {
         this.task = task;
         dependencies_ = dependencies;
         future_ = future;
@@ -26,7 +26,7 @@ public class TaskLinker {
      * Links the task to their dependencies and future tasks by name
      * @param mapping HashMap linking names of Tasks to their TaskLinkers
      */
-    public void linkTask(HashMap<String, TaskLinker> mapping) {
+    public void linkTask(HashMap<String, TaskBuilder> mapping) {
         ArrayList<Task> dependencies_tasks = new ArrayList();
         ArrayList<Task> future_tasks = new ArrayList();
 

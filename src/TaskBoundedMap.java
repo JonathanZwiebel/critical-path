@@ -1,5 +1,4 @@
 import org.jsfml.graphics.*;
-import org.jsfml.system.Vector2f;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,13 +10,9 @@ import java.util.HashMap;
  * // TODO [MAJOR]: Allow for put, remove and modification after linkage
  * // TODO: Allow for multiple heads and tails by adding ghosts to the end
  * // TODO: Add backward pass
- * Operations:
- * put - Adds a task to the map - O(1)
- * link - Links all of the tasks together to create a double linked list - O(n^2) // TODO: Fix this
- * forwardPass - Performs a forward pass on the tasks in the map - O(n * lg(n))? // TODO: Verify complexity
  */
 public class TaskBoundedMap implements Drawable {
-    private HashMap<String, TaskLinker> mapping;
+    private HashMap<String, TaskBuilder> mapping;
     private TaskBoundedMapDisplay display;
     private Task head_ = null, tail_ = null;
     public boolean linked;
@@ -32,7 +27,7 @@ public class TaskBoundedMap implements Drawable {
 
     /**
      * Adds an element to this TaskBoundedMap. Must be done before passes
-     * O(1) time
+     *
      * @param name unique identifier of the task
      * @param time time of the task
      * @param dependencies names of the tasks the precede this task
@@ -58,17 +53,16 @@ public class TaskBoundedMap implements Drawable {
             tail_ = task;
         }
 
-        TaskLinker linker = new TaskLinker(task, new ArrayList<String>(Arrays.asList(dependencies)), new ArrayList<String>(Arrays.asList(future)));
+        TaskBuilder linker = new TaskBuilder(task, new ArrayList<String>(Arrays.asList(dependencies)), new ArrayList<String>(Arrays.asList(future)));
         mapping.put(name, linker);
     }
 
     /**
      * Links all of the tasks into a double linked list
-     * O(n^2) time
      * TODO: Allow for relinking
      */
     public void link() {
-        for(TaskLinker linker : mapping.values()) {
+        for(TaskBuilder linker : mapping.values()) {
             linker.linkTask(mapping);
         }
         linked = true;
@@ -76,7 +70,6 @@ public class TaskBoundedMap implements Drawable {
 
     /**
      * Performs a forward pass on all of the tasks starting from the head task
-     * O(n * lg(n)) time
      */
     public void forwardPass() {
         assert linked = true : "Forward passing before linked";
@@ -84,17 +77,31 @@ public class TaskBoundedMap implements Drawable {
         project_time_ = tail_.early_end;
     }
 
+    /**
+     * Performs a backward pass on all of the tasks starting from the tail task
+     */
     public void backwardPass() {
         assert linked = true : "Backward passing before linked";
         assert project_time_ >= 0 : "Negative project time: " + project_time_;
         tail_.backwardPassStart(project_time_);
     }
 
+    /**
+     * Draws this TaskBoundedMap using the TaskBoundedMapDisplay
+     *
+     * @param target RenderTarget on which to draw
+     * @param states RenderStates with how to draw
+     */
     public void draw(RenderTarget target, RenderStates states) {
         display.draw(target, states);
     }
 
-    public HashMap<String, TaskLinker> getMapping() {
+    /**
+     * Returns the mapping between titles and TaskBuilders
+     *
+     * @return the mapping
+     */
+    public HashMap<String, TaskBuilder> getMapping() {
         return mapping;
     }
 }

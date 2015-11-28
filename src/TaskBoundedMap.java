@@ -63,13 +63,14 @@ public class TaskBoundedMap implements Drawable {
     public void link(String dependency, String future) {
         mapping.get(dependency).future_.add(future);
         mapping.get(future).dependencies_.add(dependency);
+        crit();
     }
 
 
     /**
      * Links all of the tasks into a double linked list
      */
-    public void buildTasks() {
+    public void crit() {
         head_ = null;
         tail_ = null;
 
@@ -86,12 +87,14 @@ public class TaskBoundedMap implements Drawable {
                 tail_ = builder.task;
             }
         }
+        forwardPass();
+        backwardPass();
     }
 
     /**
      * Performs a forward pass on all of the tasks starting from the head task
      */
-    public void forwardPass() {
+    private void forwardPass() {
         head_.forwardPassStart();
         project_time_ = tail_.getEarlyEnd();
     }
@@ -99,7 +102,7 @@ public class TaskBoundedMap implements Drawable {
     /**
      * Performs a backward pass on all of the tasks starting from the tail task
      */
-    public void backwardPass() {
+    private void backwardPass() {
         assert project_time_ >= 0 : "Negative project time: " + project_time_;
         tail_.backwardPassStart(project_time_);
     }

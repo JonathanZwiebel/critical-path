@@ -13,10 +13,10 @@ public class TaskBoundedMapTester {
         TaskBoundedMap map = new TaskBoundedMap();
         spaghettiTest(map);
 
-        map.buildTasks();
-        map.forwardPass();
-        map.backwardPass();
+        map.crit();
         map.changeTime("Prepare Egg Sauce", 25);
+        map.put("Eat!", 7);
+        map.link("Mix Sauce and Spaghetti", "Eat!");
 
         RenderWindow rw = new RenderWindow();
         VideoMode desktop = VideoMode.getDesktopMode();

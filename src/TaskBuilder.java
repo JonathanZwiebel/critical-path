@@ -8,7 +8,7 @@ import java.util.HashMap;
  */
 public class TaskBuilder {
     public Task task; // Reference to the task is stored in TaskBoundedMap
-    private ArrayList<String> dependencies_, future_;
+    public  ArrayList<String> dependencies_, future_;
 
     /**
      * Constructs a TaskBuilder with the dependencies and future tasks by name

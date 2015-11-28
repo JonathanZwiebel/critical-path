@@ -13,7 +13,7 @@ public class TaskBoundedMapTester {
         TaskBoundedMap map = new TaskBoundedMap();
         spaghettiTest(map);
 
-        map.link();
+        map.buildTasks();
         map.forwardPass();
         map.backwardPass();
         map.changeTime("Prepare Egg Sauce", 25);

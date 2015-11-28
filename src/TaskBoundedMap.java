@@ -40,26 +40,51 @@ public class TaskBoundedMap implements Drawable {
 
         Task task = new Task(name, time);
 
-        if(dependencies.length == 0) {
-            assert head_ == null : "Multiple heads being attached to map: " + name + " conflicts with " + head_.getName();
-            head_ = task;
-        }
-
-        if(future.length == 0) {
-            assert tail_ == null  : "Multiple tails being attached to map: " + name + " conflicts with " + head_.getName();
-            tail_ = task;
-        }
-
-        TaskBuilder linker = new TaskBuilder(task, new ArrayList<String>(Arrays.asList(dependencies)), new ArrayList<String>(Arrays.asList(future)));
-        mapping.put(name, linker);
+        TaskBuilder builder = new TaskBuilder(task, new ArrayList<String>(Arrays.asList(dependencies)), new ArrayList<String>(Arrays.asList(future)));
+        mapping.put(name, builder);
     }
+
+    /**
+     * Adds an element to this TaskBoundedMap without specifying dependencies and future
+     *
+     * @param name unique identifier of the task
+     * @param time time of the task
+     */
+    public void put(String name, float time) {
+        put(name, time, new String[]{}, new String[]{});
+    }
+
+    /**
+     * Links the dependency task and future task together crating a ES relationship
+     *
+     * @param dependency past task to link
+     * @param future future task to link
+     */
+    public void link(String dependency, String future) {
+        mapping.get(dependency).future_.add(future);
+        mapping.get(future).dependencies_.add(dependency);
+    }
+
 
     /**
      * Links all of the tasks into a double linked list
      */
-    public void link() {
+    public void buildTasks() {
+        head_ = null;
+        tail_ = null;
+
         for(TaskBuilder builder : mapping.values()) {
             builder.linkTask(mapping);
+
+            if(builder.task.getDependencies().size() == 0) {
+                assert head_ == null : "Multiple heads being attached to map: " + builder.task.getName() + " conflicts with " + head_.getName();
+                head_ = builder.task;
+            }
+
+            if(builder.task.getFuture().size() == 0) {
+                assert tail_ == null  : "Multiple tails being attached to map: " + builder.task.getName() + " conflicts with " + head_.getName();
+                tail_ = builder.task;
+            }
         }
     }
 

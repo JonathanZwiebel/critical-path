@@ -1,8 +1,9 @@
 package mains;
 
 import org.jsfml.graphics.Color;
-import org.jsfml.graphics.RenderStates;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.View;
+import org.jsfml.system.Vector2f;
 import org.jsfml.window.Keyboard;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
@@ -15,21 +16,23 @@ class TaskMapTest {
     private static final int FRAMERATE_LIMIT = 30;
 
     public static void main(String[] args) {
-        @SuppressWarnings("LocalVariableOfConcreteClass") TaskMap map = new TaskMap();
+        TaskMap map = new TaskMap();
         spaghettiTest(map);
         map.crit();
 
         RenderWindow rw = new RenderWindow();
         VideoMode desktop = VideoMode.getDesktopMode();
 
-        rw.create(new VideoMode(3 * desktop.width / 4, 3 * desktop.height / 4, 3 * desktop.bitsPerPixel / 4), "taskmap.Task Bounded Map Display Test");
+        rw.create(new VideoMode(3 * desktop.height / 2, 3 * desktop.height / 4, desktop.bitsPerPixel / 4), "Task Bounded Map Display Test");
+        rw.setView(new View(new Vector2f(500, 250), new Vector2f(1000, 500)));
         //rw.create(new VideoMode(desktop.width, desktop.height, desktop.bitsPerPixel), "taskmap.Task Bounded Map Display Test",  RenderWindow.FULLSCREEN);
         rw.setFramerateLimit(FRAMERATE_LIMIT);
 
 
         while(rw.isOpen()) {
             rw.clear(Color.BLACK);
-            map.draw(rw, RenderStates.DEFAULT);
+            rw.draw(map);
+
             rw.display();
 
             for(Event event : rw.pollEvents()) {
@@ -40,6 +43,24 @@ class TaskMapTest {
                     case KEY_RELEASED:
                         if(event.asKeyEvent().key == Keyboard.Key.Q) {
                             rw.close();
+                        }
+                        break;
+                    case KEY_PRESSED:
+                        if(event.asKeyEvent().key == Keyboard.Key.RIGHT) {
+                            Vector2f center = new Vector2f(rw.getView().getCenter().x + 1, rw.getView().getCenter().y);
+                            rw.setView(new View(center, new Vector2f(1000, 500)));
+                        }
+                        if(event.asKeyEvent().key == Keyboard.Key.LEFT) {
+                            Vector2f center = new Vector2f(rw.getView().getCenter().x - 1, rw.getView().getCenter().y);
+                            rw.setView(new View(center, new Vector2f(1000, 500)));
+                        }
+                        if(event.asKeyEvent().key == Keyboard.Key.UP) {
+                            Vector2f center = new Vector2f(rw.getView().getCenter().x, rw.getView().getCenter().y - 1);
+                            rw.setView(new View(center, new Vector2f(1000, 500)));
+                        }
+                        if(event.asKeyEvent().key == Keyboard.Key.DOWN) {
+                            Vector2f center = new Vector2f(rw.getView().getCenter().x, rw.getView().getCenter().y + 1);
+                            rw.setView(new View(center, new Vector2f(1000, 500)));
                         }
                         break;
                     default:

@@ -11,9 +11,11 @@ import taskmap.TaskMap;
 /**
  * Tests the taskmap.TaskMap, taskmap.TaskBuilder and taskmap.Task classes
  */
-public class TaskMapTest {
+class TaskMapTest {
+    private static final int FRAMERATE_LIMIT = 30;
+
     public static void main(String[] args) {
-        TaskMap map = new TaskMap();
+        @SuppressWarnings("LocalVariableOfConcreteClass") TaskMap map = new TaskMap();
         spaghettiTest(map);
         map.crit();
 
@@ -22,7 +24,7 @@ public class TaskMapTest {
 
         rw.create(new VideoMode(3 * desktop.width / 4, 3 * desktop.height / 4, 3 * desktop.bitsPerPixel / 4), "taskmap.Task Bounded Map Display Test");
         //rw.create(new VideoMode(desktop.width, desktop.height, desktop.bitsPerPixel), "taskmap.Task Bounded Map Display Test",  RenderWindow.FULLSCREEN);
-        rw.setFramerateLimit(30);
+        rw.setFramerateLimit(FRAMERATE_LIMIT);
 
 
         while(rw.isOpen()) {
@@ -48,7 +50,7 @@ public class TaskMapTest {
     }
 
     // http://www.lindsay-sherwin.co.uk/project_framework/images/cpa_spaghetti.jpg
-    public static void spaghettiTest(TaskMap project) {
+    private static void spaghettiTest(TaskMap project) {
         project.put("Get Ingredients", 5);
         project.put("Cook Spaghetti", 10);
         project.put("Prepare Egg Sauce", 4);

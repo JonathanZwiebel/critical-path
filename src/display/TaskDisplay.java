@@ -12,9 +12,13 @@ import taskmap.Task;
  */
 public class TaskDisplay implements Drawable {
     //TODO: Remove this
-    static int counter = 0;
-    private int id;
-    private Task task_;
+    private static int counter = 0;
+    private final int id;
+    private final Task task_;
+
+    private static final int UNIT_LENGTH = 20;
+    private static final int UNIT_WIDTH = 20;
+    private static final int UNIT_WIDTH_SPACING = 10;
 
     public TaskDisplay(Task task) {
         id = counter;
@@ -23,8 +27,8 @@ public class TaskDisplay implements Drawable {
     }
 
     public void draw(RenderTarget target, RenderStates state) {
-        RectangleShape early_rect = new RectangleShape(new Vector2f(task_.getTime() * 20, 20));
-        early_rect.setPosition(task_.getEarlyStart() * 20, id * 30);
+        RectangleShape early_rect = new RectangleShape(new Vector2f(task_.getTime() * UNIT_LENGTH, UNIT_WIDTH));
+        early_rect.setPosition(task_.getEarlyStart() * UNIT_LENGTH, id * (UNIT_WIDTH + UNIT_WIDTH_SPACING));
 
         if(task_.getFloatTime() == 0) {
             early_rect.setFillColor(Color.BLUE);
@@ -33,8 +37,8 @@ public class TaskDisplay implements Drawable {
             early_rect.setFillColor(Color.CYAN);
         }
 
-        RectangleShape late_rect = new RectangleShape(new Vector2f(task_.getFloatTime() * 20, 20));
-        late_rect.setPosition(task_.getEarlyEnd() * 20, id * 30);
+        RectangleShape late_rect = new RectangleShape(new Vector2f(task_.getFloatTime() * UNIT_LENGTH, UNIT_WIDTH));
+        late_rect.setPosition(task_.getEarlyEnd() * UNIT_LENGTH, id * (UNIT_WIDTH + UNIT_WIDTH_SPACING));
         late_rect.setFillColor(Color.GREEN);
 
         target.draw(early_rect);

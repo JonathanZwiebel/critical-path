@@ -1,7 +1,9 @@
 package taskmap;
 
 import display.TaskMapDisplay;
-import org.jsfml.graphics.*;
+import org.jsfml.graphics.Drawable;
+import org.jsfml.graphics.RenderStates;
+import org.jsfml.graphics.RenderTarget;
 
 import java.util.HashMap;
 
@@ -13,13 +15,13 @@ import java.util.HashMap;
  * // TODO: Add backward pass
  */
 public class TaskMap implements Drawable {
-    private HashMap<String, TaskBuilder> mapping;
-    private TaskMapDisplay display;
+    private final HashMap<String, TaskBuilder> mapping;
+    private final TaskMapDisplay display;
     private Task head_ = null, tail_ = null;
     private float project_time_;
 
     public TaskMap() {
-        mapping =  new HashMap();
+        mapping =  new HashMap<>();
         project_time_  = -1;
         display = new TaskMapDisplay(this);
     }
@@ -35,9 +37,7 @@ public class TaskMap implements Drawable {
         assert !mapping.containsKey(name) : "Repeat name task: " + name;
         assert !name.isEmpty() : "Attempting to put nameless task into map";
         assert time >= 0 : "taskmap.Task with negative time added to map: " + name + " with time " + time;
-
-        TaskBuilder builder = new TaskBuilder(new Task(name, time));
-        mapping.put(name, builder);
+        mapping.put(name, new TaskBuilder(new Task(name, time)));
     }
 
     /**

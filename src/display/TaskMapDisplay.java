@@ -15,12 +15,12 @@ import taskmap.TaskBuilder;
  * @version November 27th, 2015
  */
 public class TaskMapDisplay implements Drawable {
-    private TaskMap map_;
+    private final TaskMap map_;
 
     /**
      * Constructs a display.TaskMapDisplay object that displays a single taskmap.TaskMap
      * Called by a taskmap.TaskMap
-     * @param map
+     * @param map TaskMap that this display draws
      */
     public TaskMapDisplay(TaskMap map) {
         map_ = map;

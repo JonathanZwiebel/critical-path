@@ -9,8 +9,8 @@ import java.util.HashMap;
  * future Tasks before those Tasks are created
  */
 public class TaskBuilder {
-    public Task task; // Reference to the task is stored in taskmap.TaskMap
-    public  ArrayList<String> dependencies_, future_;
+    public final Task task; // Reference to the task is stored in taskmap.TaskMap
+    public final ArrayList<String> dependencies_, future_;
 
     /**
      * Constructs a taskmap.TaskBuilder with the dependencies and future tasks by name
@@ -27,8 +27,8 @@ public class TaskBuilder {
      * @param mapping HashMap linking names of Tasks to their TaskLinkers
      */
     public void linkTask(HashMap<String, TaskBuilder> mapping) {
-        ArrayList<Task> dependencies_tasks = new ArrayList();
-        ArrayList<Task> future_tasks = new ArrayList();
+        ArrayList<Task> dependencies_tasks = new ArrayList<>();
+        ArrayList<Task> future_tasks = new ArrayList<>();
 
         for(String dependent_task : dependencies_) {
             assert mapping.containsKey(dependent_task) : "Dependant taskmap.Task Not Found: " + dependent_task + " for " + task.getName();

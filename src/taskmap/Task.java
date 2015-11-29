@@ -56,7 +56,7 @@ public class Task implements Drawable {
      * Notifier will add to the dependencies_ hash map the notification task and its early end time_
      * @param notifier preceding task
      */
-    public void forwardNotify(Task notifier) {
+    private void forwardNotify(Task notifier) {
         assert notifier.early_end_ >= 0 : "In " + name_ + ": " + "Negative early end time_ from notifying task " + notifier.name_;
         assert dependencies_.contains(notifier) : "In " + name_ + ": " + "Notifier task not in dependencies_: " + notifier.name_;
         dependencies_start_map_.put(notifier, notifier.early_end_);
@@ -73,7 +73,7 @@ public class Task implements Drawable {
         // TODO: Assert that the Tasks completely match, not just the size
         assert dependencies_start_map_.size() == dependencies_.size() : "In " + name_ + ": " + "Dependencies HashMap does not match dependencies_ list in size: HashMap Size: " + dependencies_start_map_.size() + "List Size: " + dependencies_.size();
         // TODO: Ensure that this is the edge value
-        ArrayList<Float> dependencies_list = new ArrayList();
+        ArrayList<Float> dependencies_list = new ArrayList<>();
         for(Object o : dependencies_start_map_.values().toArray()) {
             dependencies_list.add((float) o);
         }
@@ -91,7 +91,7 @@ public class Task implements Drawable {
      * backward pass. Notifier will add to the future_ hash map the notification task and its late start time_
      * @param notifier future_ task
      */
-    public void backwardNotify(Task notifier) {
+    private void backwardNotify(Task notifier) {
         assert future_.contains(notifier) : "In " + name_ + ": " + notifier.name_ + "not found in future_ set";
         assert notifier.late_start_ >= 0 : "In " + name_ + ": " + "Negative late start of " + notifier.late_start_;
         future_end_map_.put(notifier, notifier.late_start_);
@@ -107,9 +107,9 @@ public class Task implements Drawable {
      */
     private void backwardPass() {
         // TODO: Assert that the Tasks completely match, not just the size
-        assert future_end_map_.size() == future_.size()  : "In " + name_ + ": " + "Future HashMap does not match dependencies_ list in size: HashMap Size: " + future_end_map_.size() + "List Size: " + future_.size();;
+        assert future_end_map_.size() == future_.size()  : "In " + name_ + ": " + "Future HashMap does not match dependencies_ list in size: HashMap Size: " + future_end_map_.size() + "List Size: " + future_.size();
         // TODO: Ensure that this is the edge value
-        ArrayList<Float> future_list = new ArrayList();
+        ArrayList<Float> future_list = new ArrayList<>();
         for(Object o : future_end_map_.values().toArray()) {
             future_list.add((float) o);
         }

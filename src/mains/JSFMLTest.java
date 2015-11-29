@@ -6,13 +6,15 @@ import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 
 /**
- * Created by Jonathan Zwiebel
+ * @author Jonathan Zwiebel
  */
-public class JSFMLTest {
+class JSFMLTest {
+    private static final int FRAMERATE_LIMIT = 30;
+
     public static void main(String args[]) {
         RenderWindow rw = new RenderWindow();
         rw.create(new VideoMode(1000, 1000), "Render Window");
-        rw.setFramerateLimit(30);
+        rw.setFramerateLimit(FRAMERATE_LIMIT);
 
         Color color = Color.CYAN;
 

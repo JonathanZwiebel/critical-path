@@ -16,6 +16,8 @@ class TaskMapTest {
     private static final int FRAMERATE_LIMIT = 30;
 
     public static void main(String[] args) {
+        float arrow_key_move_speed = 1.0f;
+
         TaskMap map = new TaskMap();
         spaghettiTest(map);
         map.crit();
@@ -44,22 +46,26 @@ class TaskMapTest {
                         if(event.asKeyEvent().key == Keyboard.Key.Q) {
                             rw.close();
                         }
+                        if(event.asKeyEvent().key.name().matches("RIGHT|LEFT|UP|DOWN")) {
+                            arrow_key_move_speed = 1.0f;
+                        }
                         break;
                     case KEY_PRESSED:
+                        arrow_key_move_speed += 0.05f;
                         if(event.asKeyEvent().key == Keyboard.Key.RIGHT) {
-                            Vector2f center = new Vector2f(rw.getView().getCenter().x + 1, rw.getView().getCenter().y);
+                            Vector2f center = new Vector2f(rw.getView().getCenter().x + arrow_key_move_speed, rw.getView().getCenter().y);
                             rw.setView(new View(center, new Vector2f(1000, 500)));
                         }
                         if(event.asKeyEvent().key == Keyboard.Key.LEFT) {
-                            Vector2f center = new Vector2f(rw.getView().getCenter().x - 1, rw.getView().getCenter().y);
+                            Vector2f center = new Vector2f(rw.getView().getCenter().x - arrow_key_move_speed, rw.getView().getCenter().y);
                             rw.setView(new View(center, new Vector2f(1000, 500)));
                         }
                         if(event.asKeyEvent().key == Keyboard.Key.UP) {
-                            Vector2f center = new Vector2f(rw.getView().getCenter().x, rw.getView().getCenter().y - 1);
+                            Vector2f center = new Vector2f(rw.getView().getCenter().x, rw.getView().getCenter().y - arrow_key_move_speed);
                             rw.setView(new View(center, new Vector2f(1000, 500)));
                         }
                         if(event.asKeyEvent().key == Keyboard.Key.DOWN) {
-                            Vector2f center = new Vector2f(rw.getView().getCenter().x, rw.getView().getCenter().y + 1);
+                            Vector2f center = new Vector2f(rw.getView().getCenter().x, rw.getView().getCenter().y + arrow_key_move_speed);
                             rw.setView(new View(center, new Vector2f(1000, 500)));
                         }
                         break;
